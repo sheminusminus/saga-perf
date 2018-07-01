@@ -6,9 +6,10 @@ function start() {
     store.dispatch({ type: 'ACTION' });
     if (Date.now() >= time + 1000) {
       clearInterval(int);
-      console.log(window.i);
+      console.log(window.counters);
+      console.log(window.counters.reduce((sum, val) => sum + val), 0);
     }
-  }, 100);
+  }, 10);
 }
 
 start();
