@@ -1,5 +1,7 @@
 import store from './store';
 
-store.subscribe(() => {
-  console.log('storrrre');
-});
+function start() {
+  store.dispatch({ type: 'ACTION' });
+}
+
+start();

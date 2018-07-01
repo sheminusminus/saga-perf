@@ -21,11 +21,6 @@ config.entry = [
   'webpack-dev-server/client?http://localhost:1337',
   // bundle the client for webpack-dev-server
   // and connect to the provided endpoint
-
-  'webpack/hot/only-dev-server',
-  // bundle the client for hot reloading
-  // only- means to only hot reload for successful updates
-
   path.join(SRC_FOLDER, 'app.js'),
 ];
 
@@ -39,13 +34,12 @@ config.devServer = {
   contentBase: DIST_FOLDER,
   compress: true,
   port: devServerPort,
-  hot: true,
+  hot: false,
   publicPath: '/',
   historyApiFallback: true,
 };
 
 config.plugins = [
-  new webpack.HotModuleReplacementPlugin(), // enable HMR globally
   new webpack.NamedModulesPlugin(),
   new HtmlWebpackPlugin({  // also generate an index.html
     filename: 'index.html',
