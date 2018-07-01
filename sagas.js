@@ -1,14 +1,15 @@
 import { take, takeEvery, fork, put } from 'redux-saga/effects';
 
+import otherWatch from './otherSagas';
+
+const makeWatch = () => otherWatch();
+const watchers = [];
+for (let i = 0; i < 10000; i++) {
+  watchers.push(makeWatch());
+}
+
 export function* count() {
-  try {
-    window.i++;
-    console.log(window.i);
-    yield null;
-  } catch (error) {
-    console.log(error, error.message);
-    yield null;
-  }
+  yield window.i++;
 }
 
 /**
@@ -17,29 +18,9 @@ export function* count() {
  * and returns the appropriate action responses.
  */
 function* watch() {
-  while (true) {
-    const { type, payload = {} } = yield take([
-      'ACTION',
-    ]);
-
-    let looping = true;
-    let time = Date.now();
-
-    switch (type) {
-      case 'ACTION':
-        while (looping) {
-          window.i++;
-          if (Date.now() >= time + 1000) looping = false;
-        }
-        console.log(window.i);
-        break;
-
-      default:
-        yield null;
-    }
-  }
+  yield takeEvery('ACTION', count);
 }
 
-export default function* rootSaga() {
-  yield watch();
+export default function* rootSagas() {
+  yield [...watchers, watch()];
 }
